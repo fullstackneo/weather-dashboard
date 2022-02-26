@@ -99,11 +99,11 @@
 }
 
 .moderate {
-  background-color: yellow;
+  background-color: rgb(248, 154, 46);
 }
 
 .severe {
-  background-color: red;
+  background-color: rgb(228, 13, 13);
 }
 
 /* future style */
