@@ -1,26 +1,31 @@
 /* clear margin and padding  */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing:border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* clear li style  */
 li {
-    list-style: none
+  list-style: none;
 }
 
+input {
+  outline: none;
+}
 /* cursor's style of button */
 button {
-    cursor: pointer
+  cursor: pointer;
+  appearance: none;
+  border: none;
 }
 
 a {
-    color: #666;
-    text-decoration: none;
-    cursor: pointer
+  color: #666;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 a:hover {
-    color: rgb(92, 163, 233)
+  color: rgb(92, 163, 233);
 }
