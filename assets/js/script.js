@@ -19,15 +19,14 @@ function displayCurrent(data) {
   }
 }
 
-//display future 5 day weather
-function displayFuture(data) {
-  console.log(data);
-
-  $(".weather-row>div").each(function (i, el) {
-    $(el).find("li:nth-child(1) span").text(data[i].temp.day);
-    $(el).find("li:nth-child(2) span").text(data[i].wind_speed);
-    $(el).find("li:nth-child(3) span").text(data[i].humidity);
-  });
+//display future day weather
+function displayFuture(futureData, i) {
+  $(".weather-row>div")
+    .eq(i)
+    .find("span")
+    .each(function (index, el) {
+      $(this).text(futureData[index]);
+    });
 }
 
 // get weather info
@@ -39,8 +38,10 @@ function getWeather(lat, lon) {
       var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
       displayCurrent(currentData);
       //display future weather
-      var futureData = [result.daily[0], result.daily[1], result.daily[2], result.daily[3], result.daily[4]];
-      displayFuture(futureData);
+      for (let i = 0; i < 5; i++) {
+        var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
+        displayFuture(futureData, i);
+      }
     })
     .catch((error) => console.log("error", error));
 }
