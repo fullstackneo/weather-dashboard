@@ -1,3 +1,5 @@
+
+
 var searchHistory = Array[8];
 searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
 
