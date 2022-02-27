@@ -128,7 +128,7 @@ function displayFuture(data, i, weather) {
 
 // get weather info
 function getWeather(lat, lon, city) {
-  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=820a3848dc010ae465d571ae74be7a18")
+  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=028a37f5d8559aab5b5649bf9e5dc203")
     .then((response) => response.json())
     .then((result) => {
       if (result.status === "OK") {
