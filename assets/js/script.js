@@ -129,14 +129,17 @@ function displayFuture(data, i, weather) {
 // get weather info
 function getWeather(lat, lon, city) {
   fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=028a37f5d8559aab5b5649bf9e5dc203")
-    .then((response) => response.json())
+    .then((response) => 
+      response.json()
+    )
     .then((result) => {
-        // display current weather
-        var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
-        var currentWeather = result.current.weather[0].main.toLowerCase();
-        displayCurrent(currentData, city, currentWeather);
+      console.log(result);
+      // display current weather
+      var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
+      var currentWeather = result.current.weather[0].main.toLowerCase();
+      displayCurrent(currentData, city, currentWeather);
 
-        //display future weather
+      //display future weather
       for (let i = 0; i < 5; i++) {
         var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
         var futureWeather = result.daily[i].weather[0].main.toLowerCase();
