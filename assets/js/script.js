@@ -3,19 +3,22 @@ function displayDate(i) {
   var date = new Date();
   date = date.setDate(date.getDate() + i);
   date = new Date(date);
-  return  date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() ;
+  return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
 }
 
 var searchHistory = Array[8];
 searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
 
 // display current weather
-function displayCurrent(data, city) {
+function displayCurrent(data, city, weather) {
   // display city name
-  $(".today h3").html(city + " <span></span><i>weather icon</i>");
+  $(".today h3").html(city + " <span></span><img>");
 
   // display current date
-  $(".today h3 span").text("("+displayDate(0)+")");
+  $(".today h3 span").text("(" + displayDate(0) + ") ");
+
+  //display weather condition icon
+  $(".today h3 img").attr("src", "./assets/icons/" + weather + ".svg");
 
   // console.log(currentData);
   $(".today ul span").each(function (index, el) {
@@ -34,16 +37,27 @@ function displayCurrent(data, city) {
 }
 
 //display future day weather
-function displayFuture(futureData, i) {
+function displayFuture(data, i, weather) {
   // display date
-  $(".weather-row").children("div").eq(i).find("p").text(displayDate(i+1));
+  $(".weather-row")
+    .children("div")
+    .eq(i)
+    .find("p")
+    .text(displayDate(i + 1));
+
+  //display weather condition icon
+  $(".weather-row")
+    .children("div")
+    .eq(i)
+    .find("img")
+    .attr("src", "./assets/icons/" + weather + ".svg");
 
   // display weather data
   $(".weather-row>div")
     .eq(i)
     .find("span")
     .each(function (index, el) {
-      $(this).text(futureData[index]);
+      $(this).text(data[index]);
     });
 }
 
@@ -54,11 +68,13 @@ function getWeather(lat, lon, city) {
     .then((result) => {
       // display current weather
       var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
-      displayCurrent(currentData, city);
+      var currentWeather = result.current.weather[0].main.toLowerCase();
+      displayCurrent(currentData, city, currentWeather);
       //display future weather
       for (let i = 0; i < 5; i++) {
         var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
-        displayFuture(futureData, i);
+        var futureWeather = result.daily[i].weather[0].main.toLowerCase();
+        displayFuture(futureData, i, futureWeather);
       }
     })
     .catch((error) => console.log("error", error));
