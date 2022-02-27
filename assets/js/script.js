@@ -26,7 +26,7 @@ function load(city) {
     .then((response) => response.json())
     .then((result) => {
       // if the fetch is success and submit via button, save the city
-      // console.log(result);
+      console.log(result);
       if (result.status === "OK") {
         console.log("geo api fetch success");
         if (submitFlag === true) {
@@ -46,7 +46,7 @@ function load(city) {
       var lon = result.results[0].geometry.location.lng;
       getWeather(lat, lon, city);
     })
-    .catch((error) => console.log("geo-api Internet error", error));
+    .catch((error) => console.log("geo-api connect error", error));
 }
 
 //capitalize first char of city
@@ -128,27 +128,22 @@ function displayFuture(data, i, weather) {
 
 // get weather info
 function getWeather(lat, lon, city) {
-  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=820a3848dc010ae465d571ae74be7a18")
+  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=028a37f5d8559aab5b5649bf9e5dc203")
     .then((response) => response.json())
     .then((result) => {
-      if (result.status === "OK") {
-        console.log("weather-api fetch success");
         // display current weather
         var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
         var currentWeather = result.current.weather[0].main.toLowerCase();
         displayCurrent(currentData, city, currentWeather);
 
         //display future weather
-        for (let i = 0; i < 5; i++) {
-          var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
-          var futureWeather = result.daily[i].weather[0].main.toLowerCase();
-          displayFuture(futureData, i, futureWeather);
-        }
-      } else {
-        console.log("weather api fetch failed");
+      for (let i = 0; i < 5; i++) {
+        var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
+        var futureWeather = result.daily[i].weather[0].main.toLowerCase();
+        displayFuture(futureData, i, futureWeather);
       }
     })
-    .catch((error) => console.log("weather-api Internet error", error));
+    .catch((error) => console.log("weather-api connect error", error));
 }
 
 function formDataHandler(e) {
