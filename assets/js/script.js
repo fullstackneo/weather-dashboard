@@ -21,25 +21,32 @@ function load(city) {
   $(".search-history li").each(function (index, el) {
     $(el).text(savedHistory[7 - index]);
   });
-  // get city's lat and lon info
+  // get city's geo info
   fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyCueXEoU9lnKGoZ8uawRHGyV8tjNV9C_Sg")
     .then((response) => response.json())
     .then((result) => {
       // if the fetch is success and submit via button, save the city
-      if (result.status === "OK" && submitFlag === true) {
-        $(".search-history").prepend("<li>" + city + "</li>");
-        $(".search-history li:last-child").remove();
-        savedHistory.push(city);
-        savedHistory.shift();
-        save();
-        submitFlag = false;
+      // console.log(result);
+      if (result.status === "OK") {
+        console.log("geo api fetch success");
+        if (submitFlag === true) {
+          console.log("update localstorage");
+          $(".search-history").prepend("<li>" + city + "</li>");
+          $(".search-history li:last-child").remove();
+          savedHistory.push(city);
+          savedHistory.shift();
+          save();
+          submitFlag = false;
+        }
+      } else {
+        console.log("geo-api fetch fail");
       }
 
       var lat = result.results[0].geometry.location.lat;
       var lon = result.results[0].geometry.location.lng;
       getWeather(lat, lon, city);
     })
-    .catch((error) => console.log("error", error));
+    .catch((error) => console.log("geo-api Internet error", error));
 }
 
 //capitalize first char of city
@@ -121,22 +128,27 @@ function displayFuture(data, i, weather) {
 
 // get weather info
 function getWeather(lat, lon, city) {
-  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=a4c6121f0370419f31df40933c07c49f")
+  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=820a3848dc010ae465d571ae74be7a18")
     .then((response) => response.json())
     .then((result) => {
-      // display current weather
-      var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
-      var currentWeather = result.current.weather[0].main.toLowerCase();
-      displayCurrent(currentData, city, currentWeather);
+      if (result.status === "OK") {
+        console.log("weather-api fetch success");
+        // display current weather
+        var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
+        var currentWeather = result.current.weather[0].main.toLowerCase();
+        displayCurrent(currentData, city, currentWeather);
 
-      //display future weather
-      for (let i = 0; i < 5; i++) {
-        var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
-        var futureWeather = result.daily[i].weather[0].main.toLowerCase();
-        displayFuture(futureData, i, futureWeather);
+        //display future weather
+        for (let i = 0; i < 5; i++) {
+          var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
+          var futureWeather = result.daily[i].weather[0].main.toLowerCase();
+          displayFuture(futureData, i, futureWeather);
+        }
+      } else {
+        console.log("weather api fetch failed");
       }
     })
-    .catch((error) => console.log("error", error));
+    .catch((error) => console.log("weather-api Internet error", error));
 }
 
 function formDataHandler(e) {
