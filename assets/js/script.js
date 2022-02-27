@@ -65,7 +65,7 @@ function displayCurrent(data, city, weather) {
   //display weather condition icon
   $(".today h3 img").attr({
     src: "./assets/icons/" + weather + ".svg",
-    alt: weather + "icon",
+    alt: weather + " weather icon",
   });
 
   // console.log(currentData);
@@ -100,7 +100,7 @@ function displayFuture(data, i, weather) {
     .find("img")
     .attr({
       src: "./assets/icons/" + weather + ".svg",
-      alt: weather + "icon",
+      alt: weather + " weather icon",
     });
 
   // display weather data
