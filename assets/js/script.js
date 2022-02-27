@@ -11,7 +11,6 @@ function displayDate(i) {
 
 // show weather info
 function load(city) {
-
   // load search history
   savedHistory = JSON.parse(localStorage.getItem("history"));
   if (!savedHistory) {
@@ -64,7 +63,10 @@ function displayCurrent(data, city, weather) {
   $(".today h3 span").text("(" + displayDate(0) + ") ");
 
   //display weather condition icon
-  $(".today h3 img").attr("src", "./assets/icons/" + weather + ".svg");
+  $(".today h3 img").attr({
+    src: "./assets/icons/" + weather + ".svg",
+    alt: weather + "icon",
+  });
 
   // console.log(currentData);
   $(".today ul span").each(function (index, el) {
@@ -96,7 +98,10 @@ function displayFuture(data, i, weather) {
     .children("div")
     .eq(i)
     .find("img")
-    .attr("src", "./assets/icons/" + weather + ".svg");
+    .attr({
+      src: "./assets/icons/" + weather + ".svg",
+      alt: weather + "icon",
+    });
 
   // display weather data
   $(".weather-row > div")
