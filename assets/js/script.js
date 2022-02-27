@@ -12,6 +12,20 @@ searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake C
 // display current weather
 function displayCurrent(data, city, weather) {
   // display city name
+
+  //capitalize first char
+  var nameArray = city.split("");
+  //capitalize first char of the city string
+  nameArray[0] = nameArray[0].toUpperCase();
+  //capitalize first char of each word of the city string
+  nameArray.forEach((el, index, array) => {
+    if (el === " ") {
+      array[index + 1] = array[index + 1].toUpperCase();
+    }
+  });
+
+  city = nameArray.join("");
+
   $(".today h3").html(city + " <span></span><img>");
 
   // display current date
