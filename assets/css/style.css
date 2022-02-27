@@ -17,7 +17,7 @@
   padding: 8px 0px;
   color: #fff;
   background-color: rgb(109, 108, 177);
-  background: linear-gradient(90deg, #7da7df 0%, #633294 100%);
+  background: linear-gradient(90deg, #7da7df 0%, #633294hover 100%);
 }
 
 /* left-column: search area style  */
@@ -53,18 +53,30 @@
 }
 
 #search-form button {
-  background-color: rgb(152, 203, 244);
+  background-color: rgb(134, 192, 240);
+  transition: 0.5s;
   color: #fff;
 }
+
+#search-form button:hover {
+  background-color: rgb(16, 131, 224);
+}
+
 .search-history {
   border-top: 2px solid rgb(215, 215, 215);
 }
+
 .search-history li {
   margin: 10px 0;
   background-color: rgb(215, 215, 215);
   color: #8d8d8d;
   text-align: center;
   cursor: pointer;
+  transition: 0.5s;
+}
+.search-history li:hover {
+  background-color: rgb(133, 133, 133);
+  color: #ffffff;
 }
 
 /* right-column style  */
