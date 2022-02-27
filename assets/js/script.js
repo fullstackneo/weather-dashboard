@@ -1,3 +1,5 @@
+var searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
+
 // return future date according to tomorrow(i=1), the day after tomorrow(i=2) ,etc
 function displayDate(i) {
   var date = new Date();
@@ -6,14 +8,21 @@ function displayDate(i) {
   return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
 }
 
-var searchHistory = Array[8];
-searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
+// show weather info
+function showWeather(city) {
+  // get city's lat and lon info
+  fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyCueXEoU9lnKGoZ8uawRHGyV8tjNV9C_Sg")
+    .then((response) => response.json())
+    .then((result) => {
+      var lat = result.results[0].geometry.location.lat;
+      var lon = result.results[0].geometry.location.lng;
+      getWeather(lat, lon, city);
+    })
+    .catch((error) => console.log("error", error));
+}
 
-// display current weather
-function displayCurrent(data, city, weather) {
-  // display city name
-
-  //capitalize first char
+//capitalize first char of city
+function capitalizeCity(city) {
   var nameArray = city.split("");
   //capitalize first char of the city string
   nameArray[0] = nameArray[0].toUpperCase();
@@ -23,8 +32,28 @@ function displayCurrent(data, city, weather) {
       array[index + 1] = array[index + 1].toUpperCase();
     }
   });
+  return nameArray.join("");
+}
 
-  city = nameArray.join("");
+function save() {
+  window.localStorage.setItem("history", JSON.stringify(searchHistory));
+}
+
+function load() {
+  var savedHistory = JSON.parse(localStorage.getItem("history"));
+
+  // load cities
+  $(".search-history li").each(function (index, el) {
+    $(el).text(savedHistory[7 - index]);
+
+  });
+  //load weather info
+  showWeather(savedHistory[savedHistory.length - 1]);
+}
+
+// display current weather
+function displayCurrent(data, city, weather) {
+  // display city name
 
   $(".today h3").html(city + " <span></span><img>");
 
@@ -67,7 +96,7 @@ function displayFuture(data, i, weather) {
     .attr("src", "./assets/icons/" + weather + ".svg");
 
   // display weather data
-  $(".weather-row>div")
+  $(".weather-row > div")
     .eq(i)
     .find("span")
     .each(function (index, el) {
@@ -94,29 +123,23 @@ function getWeather(lat, lon, city) {
     .catch((error) => console.log("error", error));
 }
 
-// show the cities in history
-$(".search-history li").each(function (index, el) {
-  $(el).text(searchHistory[index]);
-});
-
-// click search button and display result
-$("#search-form").on("submit", formDataHandler);
-
 function formDataHandler(e) {
   e.preventDefault();
   var city = $(this).find("input").val().trim();
-
   // city default value is San Diego
   if (!city) {
     city = "San Diego";
   }
-  // get city's lat and lon info
-  fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyCueXEoU9lnKGoZ8uawRHGyV8tjNV9C_Sg")
-    .then((response) => response.json())
-    .then((result) => {
-      var lat = result.results[0].geometry.location.lat;
-      var lon = result.results[0].geometry.location.lng;
-      getWeather(lat, lon, city);
-    })
-    .catch((error) => console.log("error", error));
+  //capitalize first char of city
+  city = capitalizeCity(city);
+  searchHistory.push(city);
+  searchHistory.shift();
+  save();
+  load();
 }
+
+// show the cities in history
+load();
+
+// click search button and display result
+$("#search-form").on("submit", formDataHandler);
