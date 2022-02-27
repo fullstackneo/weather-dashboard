@@ -1,5 +1,6 @@
 var searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
 var city = $("#search-form input").attr("placeholder").trim();
+var submitFlag = false;
 
 // return future date according to tomorrow(i=1), the day after tomorrow(i=2) ,etc
 function displayDate(i) {
@@ -24,10 +25,16 @@ function load(city) {
   fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyCueXEoU9lnKGoZ8uawRHGyV8tjNV9C_Sg")
     .then((response) => response.json())
     .then((result) => {
-      console.log(result);
-      // if the fetch is success, save the city
+      // if the fetch is success and submit via button, save the city
+      if (result.status === "OK" && submitFlag === true) {     
+        $(".search-history").prepend("<li>" + city + "</li>");
+        $(".search-history li:last-child").remove();
+        savedHistory.push(city);
+        savedHistory.shift();
+        save();
+        submitFlag = false;
+      }
 
-      console.log("geo ok");
       var lat = result.results[0].geometry.location.lat;
       var lon = result.results[0].geometry.location.lng;
       getWeather(lat, lon, city);
@@ -140,15 +147,9 @@ function formDataHandler(e) {
   if (!city) {
     city = "Salt Lake City";
   }
-  load(city);
-  //change the placeholder to current city
   $("#search-form input").val("");
-
-  $(".search-history").prepend("<li>" + city + "</li>");
-  $(".search-history li:last-child").remove();
-  savedHistory.push(city);
-  savedHistory.shift();
-  save();
+  submitFlag = true;
+  load(city);
 }
 
 // click city in history
