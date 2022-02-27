@@ -6,12 +6,12 @@
 
 ## Demo
 
-![image](https://github.com/fullstackneo/code-quiz/blob/main/screenshots/code-quiz-screenshots.gif)
+![image](https://github.com/fullstackneo/weather-dashboard/blob/main/screenshots/screenshot.png)
 
 ## Link
 
-- Web App: https://fullstackneo.github.io/code-quiz/
-- Repository: https://github.com/fullstackneo/code-quiz
+- Web App: https://fullstackneo.github.io/weather-dashboard
+- Repository: https://github.com/fullstackneo/weather-dashboard
 
 ## Skills
 
