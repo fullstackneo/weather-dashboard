@@ -17,7 +17,7 @@
   padding: 8px 0px;
   color: #fff;
   background-color: rgb(109, 108, 177);
-  background: linear-gradient(90deg, #7da7df 0%, #633294 100%);
+  background: linear-gradient(90deg, rgb(59, 110, 196) 0%, rgb(35, 4, 85) 100%);
 }
 
 /* left-column: search area style  */
@@ -57,7 +57,7 @@
 }
 
 #search-form button {
-  background-color: rgb(134, 192, 240);
+  background-color: rgb(90, 162, 233);
   transition: 0.5s;
   color: #fff;
 }
@@ -67,19 +67,19 @@
 }
 
 .search-history {
-  border-top: 2px solid rgb(215, 215, 215);
+  border-top: 2px solid rgb(183, 183, 183);
 }
 
 .search-history li {
   margin: 10px 0;
-  background-color: rgb(215, 215, 215);
-  color: #8d8d8d;
+  background-color: rgb(183, 183, 183);
+  color: #1d1d1d;
   text-align: center;
   cursor: pointer;
   transition: 0.5s;
 }
 .search-history li:hover {
-  background-color: rgb(167, 165, 165);
+  background-color: rgb(90, 90, 90);
   color: #ffffff;
 }
 
@@ -136,7 +136,7 @@
 }
 
 .weather-row > div {
-  background-color: rgb(117, 135, 152);
+  background-color: rgb(51, 71, 90);
   flex: 1;
   margin-right: 15px;
   padding: 5px;
