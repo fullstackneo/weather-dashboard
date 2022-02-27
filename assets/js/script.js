@@ -45,10 +45,9 @@ function load() {
   // load cities
   $(".search-history li").each(function (index, el) {
     $(el).text(savedHistory[7 - index]);
-
   });
   //load weather info
-  showWeather(savedHistory[savedHistory.length - 1]);
+  showWeather("Salt Lake City");
 }
 
 // display current weather
@@ -128,7 +127,7 @@ function formDataHandler(e) {
   var city = $(this).find("input").val().trim();
   // city default value is San Diego
   if (!city) {
-    city = "San Diego";
+    city = "Salt Lake City";
   }
   //capitalize first char of city
   city = capitalizeCity(city);
@@ -138,8 +137,17 @@ function formDataHandler(e) {
   load();
 }
 
+// click cities in history
+function clickHistoryHandler() {
+  var city = $(this).text();
+  showWeather(city);
+}
+
 // show the cities in history
 load();
 
 // click search button and display result
 $("#search-form").on("submit", formDataHandler);
+
+// click cities in history
+$(".search-history li").on("click", clickHistoryHandler);
