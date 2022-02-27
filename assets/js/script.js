@@ -26,7 +26,7 @@ function load(city) {
     .then((response) => response.json())
     .then((result) => {
       // if the fetch is success and submit via button, save the city
-      if (result.status === "OK" && submitFlag === true) {     
+      if (result.status === "OK" && submitFlag === true) {
         $(".search-history").prepend("<li>" + city + "</li>");
         $(".search-history li:last-child").remove();
         savedHistory.push(city);
@@ -165,4 +165,4 @@ load(city);
 $("#search-form").on("submit", formDataHandler);
 
 // click cities in history
-$(".search-history li").on("click", clickHistoryHandler);
+$(".search-history").on("click", "li", clickHistoryHandler);
