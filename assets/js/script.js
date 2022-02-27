@@ -1,4 +1,5 @@
 var searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
+var city = $("#search-form input").attr("placeholder").trim();
 
 // return future date according to tomorrow(i=1), the day after tomorrow(i=2) ,etc
 function displayDate(i) {
@@ -9,11 +10,24 @@ function displayDate(i) {
 }
 
 // show weather info
-function showWeather(city) {
+function load(city) {
+  // load search history
+  savedHistory = JSON.parse(localStorage.getItem("history"));
+  if (!savedHistory) {
+    savedHistory = searchHistory;
+    save();
+  }
+  $(".search-history li").each(function (index, el) {
+    $(el).text(savedHistory[7 - index]);
+  });
   // get city's lat and lon info
   fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyCueXEoU9lnKGoZ8uawRHGyV8tjNV9C_Sg")
     .then((response) => response.json())
     .then((result) => {
+      console.log(result);
+      // if the fetch is success, save the city
+
+      console.log("geo ok");
       var lat = result.results[0].geometry.location.lat;
       var lon = result.results[0].geometry.location.lng;
       getWeather(lat, lon, city);
@@ -35,25 +49,14 @@ function capitalizeCity(city) {
   return nameArray.join("");
 }
 
+// save the history
 function save() {
-  window.localStorage.setItem("history", JSON.stringify(searchHistory));
-}
-
-function load() {
-  var savedHistory = JSON.parse(localStorage.getItem("history"));
-
-  // load cities
-  $(".search-history li").each(function (index, el) {
-    $(el).text(savedHistory[7 - index]);
-  });
-  //load weather info
-  showWeather("Salt Lake City");
+  window.localStorage.setItem("history", JSON.stringify(savedHistory));
 }
 
 // display current weather
 function displayCurrent(data, city, weather) {
   // display city name
-
   $(".today h3").html(city + " <span></span><img>");
 
   // display current date
@@ -105,13 +108,14 @@ function displayFuture(data, i, weather) {
 
 // get weather info
 function getWeather(lat, lon, city) {
-  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=07fbc9932f3a4d5f19df3aa5907fbbb2")
+  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=a4c6121f0370419f31df40933c07c49f")
     .then((response) => response.json())
     .then((result) => {
       // display current weather
       var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
       var currentWeather = result.current.weather[0].main.toLowerCase();
       displayCurrent(currentData, city, currentWeather);
+
       //display future weather
       for (let i = 0; i < 5; i++) {
         var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
@@ -124,27 +128,31 @@ function getWeather(lat, lon, city) {
 
 function formDataHandler(e) {
   e.preventDefault();
-  var city = $(this).find("input").val().trim();
-  // city default value is San Diego
+  city = $("#search-form input").val().trim();
+  city = capitalizeCity(city);
+  // city default value is Salt Lake City
   if (!city) {
     city = "Salt Lake City";
   }
-  //capitalize first char of city
-  city = capitalizeCity(city);
-  searchHistory.push(city);
-  searchHistory.shift();
+  load(city);
+  //change the placeholder to current city
+  $("#search-form input").val("");
+
+  $(".search-history").prepend("<li>" + city + "</li>");
+  $(".search-history li:last-child").remove();
+  savedHistory.push(city);
+  savedHistory.shift();
   save();
-  load();
 }
 
-// click cities in history
+// click city in history
 function clickHistoryHandler() {
   var city = $(this).text();
-  showWeather(city);
+  load(city);
 }
 
-// show the cities in history
-load();
+// load the page
+load(city);
 
 // click search button and display result
 $("#search-form").on("submit", formDataHandler);
