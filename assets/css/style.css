@@ -17,7 +17,7 @@
   padding: 8px 0px;
   color: #fff;
   background-color: rgb(109, 108, 177);
-  background: linear-gradient(90deg, #7da7df 0%, #633294hover 100%);
+  background: linear-gradient(90deg, #7da7df 0%, #633294 100%);
 }
 
 /* left-column: search area style  */
@@ -39,6 +39,10 @@
   padding: 5px;
   border: 1px solid rgb(215, 215, 215);
   border-radius: 2px;
+}
+
+#search-form input:focus {
+  border: 1px solid rgb(134, 192, 240);
 }
 
 #search-form input::placeholder {
@@ -75,7 +79,7 @@
   transition: 0.5s;
 }
 .search-history li:hover {
-  background-color: rgb(133, 133, 133);
+  background-color: rgb(167, 165, 165);
   color: #ffffff;
 }
 
@@ -84,7 +88,7 @@
   flex: 3;
 }
 
-/* today style  */
+/* current weather style  */
 .today h3 {
   font-size: 17px;
 }

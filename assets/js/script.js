@@ -11,6 +11,7 @@ function displayDate(i) {
 
 // show weather info
 function load(city) {
+
   // load search history
   savedHistory = JSON.parse(localStorage.getItem("history"));
   if (!savedHistory) {
