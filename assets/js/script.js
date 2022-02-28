@@ -145,19 +145,23 @@ function formDataHandler(e) {
   // city default value is Salt Lake City
   if (!city) {
     city = "Salt Lake City";
-    save();
   } else {
     city = capitalizeCity(city);
-    $("#search-form input").val("");
-    var li = $("<li>" + city + "</li>");
-    li.css("display", "none");
-    $(".search-history").prepend(li);
-
-    li.slideDown(function () {
-      $(".search-history li:last-child").remove();
-    });
-    save();
   }
+
+  $("#search-form input").val("");
+
+  // add new li
+  var li = $("<li>" + city + "</li>");
+  li.css("display", "none");
+  $(".search-history").prepend(li);
+  li.slideDown();
+
+  // remove the last li
+  $(".search-history li:last-child").fadeOut(function () {
+    $(this).remove();
+  });
+  save();
   load(city);
 }
 
@@ -177,6 +181,7 @@ $("#search-form").on("submit", formDataHandler);
 $("#search-form input").click(function () {
   $(this).addClass("inputFocus");
 });
+
 //click outside input and remove border
 $("#search-form input").blur(function () {
   $(this).removeClass("inputFocus");
