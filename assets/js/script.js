@@ -1,6 +1,5 @@
 var searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
-var city = $("#search-form input").attr("placeholder").trim();
-var submitFlag = false;
+var city = "Sakt Lake City";
 
 // return future date according to tomorrow(i=1), the day after tomorrow(i=2) ,etc
 function displayDate(i) {
@@ -26,22 +25,12 @@ function load(city) {
     .then((response) => response.json())
     .then((result) => {
       // if the fetch is success and submit via button, save the city
-      console.log(result);
       if (result.status === "OK") {
         console.log("geo api fetch success");
-        if (submitFlag === true) {
-          console.log("update localstorage");
-          $(".search-history").prepend("<li>" + city + "</li>");
-          $(".search-history li:last-child").remove();
-          savedHistory.push(city);
-          savedHistory.shift();
-          save();
-          submitFlag = false;
-        }
       } else {
         console.log("geo-api fetch fail");
+        return false;
       }
-
       var lat = result.results[0].geometry.location.lat;
       var lon = result.results[0].geometry.location.lng;
       getWeather(lat, lon, city);
@@ -65,6 +54,8 @@ function capitalizeCity(city) {
 
 // save the history
 function save() {
+  savedHistory.push(city);
+  savedHistory.shift();
   window.localStorage.setItem("history", JSON.stringify(savedHistory));
 }
 
@@ -129,10 +120,9 @@ function displayFuture(data, i, weather) {
 // get weather info
 function getWeather(lat, lon, city) {
   fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=028a37f5d8559aab5b5649bf9e5dc203")
-    .then((response) => 
-      response.json()
-    )
+    .then((response) => response.json())
     .then((result) => {
+      console.log("weather api result:");
       console.log(result);
       // display current weather
       var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
@@ -152,19 +142,28 @@ function getWeather(lat, lon, city) {
 function formDataHandler(e) {
   e.preventDefault();
   city = $("#search-form input").val().trim();
-  city = capitalizeCity(city);
   // city default value is Salt Lake City
   if (!city) {
     city = "Salt Lake City";
+    save();
+  } else {
+    city = capitalizeCity(city);
+    $("#search-form input").val("");
+    var li = $("<li>" + city + "</li>");
+    li.css("display", "none");
+    $(".search-history").prepend(li);
+
+    li.slideDown(function () {
+      $(".search-history li:last-child").remove();
+    });
+    save();
   }
-  $("#search-form input").val("");
-  submitFlag = true;
   load(city);
 }
 
 // click city in history
 function clickHistoryHandler() {
-  var city = $(this).text();
+  city = $(this).text();
   load(city);
 }
 
