@@ -154,6 +154,11 @@
 .weather-row img {
   margin-top: 5px;
 }
+
 .weather-row ul li {
   margin: 5px 0;
+}
+
+.weather-row ul li:first-child {
+  margin-top: 0;
 }
