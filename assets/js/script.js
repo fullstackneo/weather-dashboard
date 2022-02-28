@@ -173,5 +173,14 @@ load(city);
 // click search button and display result
 $("#search-form").on("submit", formDataHandler);
 
+// click input and show border
+$("#search-form input").click(function () {
+  $(this).addClass("inputFocus");
+});
+//click outside input and remove border
+$("#search-form input").blur(function () {
+  $(this).removeClass("inputFocus");
+});
+
 // click cities in history
 $(".search-history").on("click", "li", clickHistoryHandler);

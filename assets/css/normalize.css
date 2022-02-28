@@ -5,9 +5,7 @@
   box-sizing: border-box;
 }
 
-ul {
-  overflow: hidden;
-}
+
 /* clear li style  */
 li {
   list-style: none;

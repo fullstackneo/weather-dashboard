@@ -41,8 +41,8 @@
   border-radius: 2px;
 }
 
-#search-form input:focus {
-  border: 1px solid rgb(134, 192, 240);
+.inputFocus {
+  border: 1px solid rgb(134, 192, 240) !important;
 }
 
 #search-form input::placeholder {
