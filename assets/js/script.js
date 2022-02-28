@@ -24,6 +24,7 @@ function load(city) {
   fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyCueXEoU9lnKGoZ8uawRHGyV8tjNV9C_Sg")
     .then((response) => response.json())
     .then((result) => {
+      console.log(result);
       // if the fetch is success and submit via button, save the city
       if (result.status === "OK") {
         console.log("geo api fetch success");
@@ -33,6 +34,7 @@ function load(city) {
       }
       var lat = result.results[0].geometry.location.lat;
       var lon = result.results[0].geometry.location.lng;
+      city = result.results[0].formatted_address;
       getWeather(lat, lon, city);
     })
     .catch((error) => console.log("geo-api connect error", error));
