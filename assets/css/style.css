@@ -1,6 +1,6 @@
 /* section font size */
 #dashboard {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* 1:3 ratio layout  */
@@ -109,7 +109,7 @@
   color: #fff;
   border-radius: 3px;
   padding: 3px 8px;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .favorable {
@@ -133,7 +133,7 @@
 .weather-row {
   display: flex;
   align-content: space-between;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .weather-row > div {
@@ -149,7 +149,7 @@
 }
 
 .weather-row p {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .weather-row img {

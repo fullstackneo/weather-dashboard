@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  
   var searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
   var city = "Sakt Lake City";
 
@@ -23,15 +22,21 @@ $(document).ready(function () {
       $(el).text(savedHistory[7 - index]);
     });
     // get city's geo info
-    fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyCueXEoU9lnKGoZ8uawRHGyV8tjNV9C_Sg")
-      .then((response) => response.json())
+    var promise = fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyCueXEoU9lnKGoZ8uawRHGyV8tjNV9C_Sg");
+    console.log(promise);
+    promise
+      .then((response) => {
+        console.log(promise);
+        // console.log(response);
+        return response.json();
+      })
       .then((result) => {
-        console.log(result);
+        console.log(promise);
         // if the fetch is success and submit via button, save the city
         if (result.status === "OK") {
-          console.log("geo api fetch success");
+          // console.log("geo api fetch success");
         } else {
-          console.log("geo-api fetch fail");
+          // console.log("geo-api fetch fail");
           return false;
         }
         var lat = result.results[0].geometry.location.lat;
@@ -39,7 +44,10 @@ $(document).ready(function () {
         city = result.results[0].formatted_address;
         getWeather(lat, lon, city);
       })
-      .catch((error) => console.log("geo-api connect error", error));
+      .catch((error) => {
+        console.log(promise);
+        console.log("geo-api connect error", error);
+      });
   }
 
   //capitalize first char of city
@@ -84,6 +92,7 @@ $(document).ready(function () {
 
     // change the uv background
     var uvlevel = data[3];
+    $("#uvIndex").removeClass();
     if (uvlevel < 3) {
       $("#uvIndex").addClass("favorable");
     } else if (uvlevel <= 7) {
@@ -123,11 +132,16 @@ $(document).ready(function () {
 
   // get weather info
   function getWeather(lat, lon, city) {
-    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=028a37f5d8559aab5b5649bf9e5dc203")
-      .then((response) => response.json())
+    var promise2 = fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=a4c6121f0370419f31df40933c07c49f");
+
+    promise2
+      .then((response) => {
+        // console.log(promise2);
+        return response.json();
+      })
       .then((result) => {
-        console.log("weather api result:");
-        console.log(result);
+        // console.log("weather api result:");
+        // console.log(result);
         // display current weather
         var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
         var currentWeather = result.current.weather[0].main.toLowerCase();
@@ -193,5 +207,4 @@ $(document).ready(function () {
 
   // click cities in history
   $(".search-history").on("click", "li", clickHistoryHandler);
-
-})
+});
