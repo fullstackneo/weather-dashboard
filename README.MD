@@ -6,7 +6,7 @@
 
 ## Demo
 
-![image](https://github.com/fullstackneo/weather-dashboard/blob/main/screenshots/screenshot.png)
+![image](https://github.com/fullstackneo/weather-dashboard/blob/main/assets/screenshots/screenshot.png)
 
 ## Link
 
