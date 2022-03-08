@@ -1,6 +1,6 @@
 $(document).ready(function () {
   var searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
-  var city = "Sakt Lake City";
+  var city = "Salt Lake City";
 
   // return future date according to tomorrow(i=1), the day after tomorrow(i=2) ,etc
   function displayDate(i) {
@@ -26,14 +26,25 @@ $(document).ready(function () {
     console.log(promise);
     promise
       .then((response) => {
-        console.log(promise);
-        // console.log(response);
+        console.log(response);
         return response.json();
       })
       .then((result) => {
-        console.log(promise);
+        console.log(result);
         // if the fetch is success and submit via button, save the city
         if (result.status === "OK") {
+          console.log("inside");
+
+          // add new li
+          var li = $("<li>" + city + "</li>");
+          li.css("display", "none");
+          $(".search-history").prepend(li);
+          li.slideDown();
+
+          // remove the last li
+          $(".search-history li:last-child").fadeOut(function () {
+            $(this).remove();
+          });
           // console.log("geo api fetch success");
         } else {
           // console.log("geo-api fetch fail");
@@ -132,7 +143,7 @@ $(document).ready(function () {
 
   // get weather info
   function getWeather(lat, lon, city) {
-    var promise2 = fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=a4c6121f0370419f31df40933c07c49f");
+    var promise2 = fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=a4c6121f0370419f31df40933c07c49f" + "&units=imperial");
 
     promise2
       .then((response) => {
@@ -169,16 +180,6 @@ $(document).ready(function () {
 
     $("#search-form input").val("");
 
-    // add new li
-    var li = $("<li>" + city + "</li>");
-    li.css("display", "none");
-    $(".search-history").prepend(li);
-    li.slideDown();
-
-    // remove the last li
-    $(".search-history li:last-child").fadeOut(function () {
-      $(this).remove();
-    });
     save();
     load(city);
   }
