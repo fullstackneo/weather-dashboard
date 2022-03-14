@@ -35,7 +35,7 @@ $(document).ready(function () {
         if (result.status === "OK") {
           // console.log(savedHistory);
           // do not add to history column and saved items if they already contain this city
-          if (!savedHistory.includes(city) || !$("#search-form input").text() === "") {
+          if (!savedHistory.includes(city) || !$("#search-form input").text().trim() === "") {
             save();
             // add new li to history
             var li = $("<li>" + city + "</li>");
@@ -187,7 +187,7 @@ $(document).ready(function () {
 
   // click city in history
   function clickHistoryHandler() {
-    city = $(this).text();
+    city = $(this).text().trim();
     load(city);
   }
 
