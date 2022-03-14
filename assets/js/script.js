@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  var searchHistory = ["Los Angeles", "New York", "Chicago", "Las Vegas", "Salt Lake City", "San Antonio", "Phoenix", "Houston"];
+  var searchHistory = ["", "New York", "Chicago", "Las Vegas", "Los Angeles", "San Antonio", "Phoenix", "Houston"];
   var city = "Salt Lake City";
 
   // return future date according to tomorrow(i=1), the day after tomorrow(i=2) ,etc
@@ -16,7 +16,7 @@ $(document).ready(function () {
     savedHistory = JSON.parse(localStorage.getItem("history"));
     if (!savedHistory) {
       savedHistory = searchHistory;
-      save();
+      localStorage.setItem("history", JSON.stringify(savedHistory));
     }
     $(".search-history li").each(function (index, el) {
       $(el).text(savedHistory[7 - index]);
@@ -33,18 +33,21 @@ $(document).ready(function () {
         console.log(result);
         // if the fetch is success and submit via button, save the city
         if (result.status === "OK") {
-          console.log("inside");
+          // console.log(savedHistory);
+          // do not add to history column and saved items if they already contain this city
+          if (!savedHistory.includes(city) || !$("#search-form input").text() === "") {
+            save();
+            // add new li to history
+            var li = $("<li>" + city + "</li>");
+            li.css("display", "none");
+            $(".search-history").prepend(li);
+            li.slideDown();
 
-          // add new li
-          var li = $("<li>" + city + "</li>");
-          li.css("display", "none");
-          $(".search-history").prepend(li);
-          li.slideDown();
-
-          // remove the last li
-          $(".search-history li:last-child").fadeOut(function () {
-            $(this).remove();
-          });
+            // remove the last li
+            $(".search-history li:last-child").fadeOut(function () {
+              $(this).remove();
+            });
+          }
           // console.log("geo api fetch success");
         } else {
           // console.log("geo-api fetch fail");
@@ -179,8 +182,6 @@ $(document).ready(function () {
     }
 
     $("#search-form input").val("");
-
-    save();
     load(city);
   }
 
