@@ -157,13 +157,13 @@ $(document).ready(function () {
         // console.log("weather api result:");
         // console.log(result);
         // display current weather
-        var currentData = [result.current.temp, result.current.wind_speed, result.current.humidity, result.current.uvi.toFixed(2)];
+        var currentData = [parseInt(result.current.temp), parseInt(result.current.wind_speed), parseInt(result.current.humidity), result.current.uvi.toFixed(2)];
         var currentWeather = result.current.weather[0].main.toLowerCase();
         displayCurrent(currentData, city, currentWeather);
 
         //display future weather
         for (let i = 0; i < 5; i++) {
-          var futureData = [result.daily[i].temp.day, result.daily[i].wind_speed, result.daily[i].humidity];
+          var futureData = [parseInt(result.daily[i].temp.day), parseInt(result.daily[i].wind_speed), parseInt(result.daily[i].humidity)];
           var futureWeather = result.daily[i].weather[0].main.toLowerCase();
           displayFuture(futureData, i, futureWeather);
         }
